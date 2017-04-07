@@ -1,0 +1,54 @@
+package pipe.core.expression.statespec.parser;
+
+import formula.parser.ErrorMsg;
+import pipe.core.expression.statespec.grammer.*;
+
+import java_cup.runtime.Scanner;
+import java_cup.runtime.Symbol;
+
+import java.util.*;
+import java.io.*;
+
+parser code {:
+	private ErrorMsg mErrorCollector;
+
+    public parser(final java_cup.runtime.Scanner pScanner, final ErrorMsg pErrorCollector) {
+      this(pScanner);
+      mErrorCollector = pErrorCollector;
+    }
+
+    public void syntax_error(java_cup.runtime.Symbol current) {
+      mErrorCollector.error(current.left, String.format("Syntax error: %s", current));
+    }
+:}
+
+
+terminal AND, OR, NOT, RPAREN, LPAREN;
+terminal String STR;
+
+non terminal Sentence sentence;
+non terminal Expression expression;
+
+precedence left AND;
+precedence left OR;
+precedence left NOT;
+precedence left LPAREN,RPAREN;
+
+start with sentence;
+
+sentence ::= expression:e
+			{: RESULT = new Sentence(e); :}
+		;
+
+expression ::= NOT:n expression:e
+			{: RESULT = new Inversion(e); :}
+		|	expression:e1 AND:a expression:e2
+			{: RESULT = new Conjunction(e1, e2); :}
+		|	expression:e1 OR:o expression:e2
+			{: RESULT = new Disjunction(e1, e2); :}
+		| LPAREN expression:e RPAREN
+			{: RESULT = new Compound(e); :}
+		| STR:p LPAREN STR:v RPAREN
+			{: RESULT = new StateExpression(p, v); :}
+		;
+

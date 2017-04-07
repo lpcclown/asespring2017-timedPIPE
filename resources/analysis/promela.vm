@@ -1,0 +1,109 @@
+#macro( definedatatypes $place)
+#foreach ($type in $fieldmappings.get($place.getId()))
+$type.value $type.key;
+#end
+#end
+
+###define Bound_P0 3
+#set ($def = "\#define" )
+#foreach ($place in $data.getPlaces())
+$def Bound_$place.getName() $place.getCapacity()
+#end
+
+##typedef type_P0 {
+##int field1;
+##}
+#foreach ($place in $data.getPlaces())
+typedef type_$place.getName() {
+  #definedatatypes($place)
+};
+
+#end
+
+##chan place_P0 = [Bound_P0] of {type_P0};
+#foreach ($place in $data.getPlaces())
+chan place_$place.getName() = [Bound_$place.getName()] of {type_$place.getName()};
+#end
+
+##inline is_enabled_T1() {}
+#foreach ($transition in $data.getTransitions())
+inline is_enabled_$transition.getName()() {
+#foreach($place in $transition.getPlaceInList())
+  #definedatatypes($place)
+#if($place.getDataType().getPow())
+  place_$place.getName()??<$handler.joinFieldNames($fieldmappings.get($place.getId()))>;
+#else
+  place_$place.getName()?<$handler.joinFieldNames($fieldmappings.get($place.getId()))>;
+#end
+#end
+
+  if
+  :: ($handler.evaluatePreCondition($transition)) -> $transition.getName()_is_enabled = true;
+  :: else -> skip
+  fi
+}
+
+#end
+
+##inline fire_T1() {}
+#foreach ($transition in $data.getTransitions())
+inline fire_$transition.getName()() {
+#foreach($place in $transition.getPlaceInList())
+#if($place.getDataType().getPow())
+place_$place.getName()??$handler.joinFieldNames($fieldmappings.get($place.getId()));
+#else
+place_$place.getName()?$handler.joinFieldNames($fieldmappings.get($place.getId()));
+#end
+#end
+
+$handler.evaluatePostCondition($transition)
+
+#foreach($place in $transition.getPlaceOutList())
+place_$place.getName()!$place.getName();
+#end
+$transition.getName()_is_enabled = false;
+
+}
+
+#end
+
+##inline T0() {}
+#foreach($transition in $data.getTransitions())
+inline $transition.getName()() {
+  is_enabled_$transition.getName()();
+  if
+  :: $transition.getName()_is_enabled -> atomic{fire_$transition.getName()()}
+  :: else -> skip
+  fi
+}
+#end
+
+##proctype Main() {}
+proctype Main() {
+  #foreach($transition in $data.getTransitions())
+  $transition.getName()_is_enabled = false;
+  #end
+
+  do
+#foreach($transition in $data.getTransitions())
+  :: $transition.getName()()
+#end
+  od
+}
+
+##init
+init {
+#foreach($place in $data.getPlaces())
+type_$place.getName() $place.getName();
+#foreach($token in $place.getToken().getListToken())
+$handler.tokenToFieldAssignment($token, $place, $fieldmappings.get($place.getId()))
+place_$place.getName()!$place.getName();
+
+#end
+
+#end
+
+run Main();
+}
+
+ltl f{$ltl}

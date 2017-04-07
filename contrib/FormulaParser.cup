@@ -1,0 +1,253 @@
+package formula.parser;
+
+import formula.absyntree.*;
+
+parser code {:
+	ErrorMsg errorMsg;
+	public parser(java_cup.runtime.Scanner scan, ErrorMsg err) {
+		this(scan);
+		errorMsg = err;
+	}
+	public void syntax_error(java_cup.runtime.Symbol current) {
+	    report_error("Syntax error (" + current.sym + ")", current);
+	}
+
+	public void report_error(String message, java_cup.runtime.Symbol info) {
+		errorMsg.error(info.left, message);
+	}
+:}
+
+
+terminal AND, OR, NOT, IMP, EQUIV, EQ, NEQ, GT, LT, GEQ, LEQ,
+		 PLUS, MINUS, UMINUS, MUL, MOD, DIV,
+		FORALL, EXISTS, NEXISTS,
+		IN, NIN, UNION, DIFF, SETDEF,
+		RBRACK, LBRACK,	RPAREN, LPAREN, LBRACE, RBRACE, 
+		DOT, COMMA, COLON;
+terminal TRUE, FALSE, EMPTY;
+terminal String NUM;
+terminal String ID;
+terminal String STR;
+
+non terminal Sentence sentence;
+non terminal Formula formula;
+non terminal AtomicFormula atomicFormula;
+non terminal CompoundFormula compoundFormula;
+non terminal ComplexFormula complexFormula;
+non terminal Term term;
+non terminal Terms terms;
+non terminal TermRest termRest;
+non terminal TermRestList termRests;
+non terminal Exp exp;
+non terminal RelExp rel_exp;
+non terminal ArithExp arith_exp;
+non terminal SetExp set_exp;
+non terminal Variable variable;
+non terminal UserVariable userVariable;
+non terminal Quantifier quantifier;
+non terminal Domain domain;
+non terminal Constant constant;
+non terminal Index index;
+non terminal Empty empty;
+non terminal FunctionExp function;
+
+precedence left AND;
+precedence left OR;
+precedence left NOT;
+precedence left IMP,EQUIV;
+precedence left EQ,NEQ;
+precedence left LT,GT,LEQ,GEQ;
+precedence left UNION;
+precedence left DIFF;
+precedence left NIN;
+precedence left IN;
+precedence left SETDEF;
+precedence left LBRACE,RBRACE;
+precedence left LPAREN,RPAREN;
+precedence left PLUS, MINUS, MOD;
+precedence left MUL, DIV;
+precedence left UMINUS;
+precedence left LBRACK,RBRACK;
+
+start with sentence;
+
+sentence ::= formula:f
+			{:RESULT = new Sentence(fleft, f); :}
+		;
+
+formula ::= atomicFormula:af
+			{: RESULT = new AtFormula(afleft, af); :}
+		|	compoundFormula:cf
+			{: RESULT = new CpFormula(cfleft, cf); :}
+		|	complexFormula:cpf
+			{: RESULT = new CpxFormula(cpfleft, cpf); :}
+		|   LPAREN formula:f RPAREN
+			{: RESULT = f; :}	
+		;
+		
+atomicFormula  ::= NOT:n formula:f
+			{: RESULT = new NotFormula(nleft, f); :}
+		|	term:t
+			{: RESULT = new AtomicTerm(tleft, t); :}
+		;
+		
+compoundFormula ::=	formula:f1 AND:a formula:f2
+			{: RESULT = new AndFormula(aleft, f1, f2); :}
+		|	formula:f1 OR:o formula:f2
+			{: RESULT = new OrFormula(oleft, f1, f2); :}
+		|	formula:f1 IMP:i formula:f2
+			{: RESULT = new ImpFormula(ileft, f1, f2); :}
+		|	formula:f1 EQUIV:e formula:f2
+			{: RESULT = new EquivFormula(eleft, f1, f2); :}
+		;	
+
+complexFormula ::= quantifier:q userVariable:u domain:d variable:v DOT LPAREN formula:f RPAREN
+			{: RESULT = new ComplexFormula(qleft, q, u, d, v, f); :}
+		;
+				
+term    ::= constant:c
+			{: RESULT = new ConstantTerm(cleft, c); :}
+		|	variable:v
+			{: RESULT = new VariableTerm(vleft, v); :}
+		|	empty:e
+			{: RESULT = new EmptyTerm(eleft, e); :}
+		|	exp:e
+			{: RESULT = new ExpTerm(eleft, e); :}
+		| function:f
+		  {: RESULT = new FunctionTerm(fleft, f); :}
+		;
+
+function ::=
+        ID:n LPAREN RPAREN
+          {: RESULT = new FunctionExp(n); :}
+      | ID:n LPAREN terms:t RPAREN
+          {: RESULT = new FunctionExp(n, t); :}
+      ;
+
+terms ::=  term:t termRests:tr
+			{: RESULT = new Terms(tleft, t, tr); :}
+		;
+		
+termRest ::= COMMA:c term:t
+			{: RESULT = new TermRest(cleft, t); :}
+		;
+
+termRests ::= 
+			{: RESULT = new TermRestList(); :}
+		|	termRests:trs termRest:tr
+			{: trs.addElement(tr); RESULT = trs; :}
+		;
+		
+exp 	::= arith_exp:ae
+			{: RESULT = new AExp(aeleft, ae); :}
+		| LPAREN arith_exp:ae RPAREN
+      {: RESULT = new AExp(aeleft, ae, true); :}
+		| rel_exp:re
+			{: RESULT = new RExp(releft, re); :}
+		| LPAREN rel_exp:re RPAREN
+          {: RESULT = new RExp(releft, re, true); :}
+		| set_exp:se
+			{: RESULT = new SExp(seleft, se); :}
+		;
+			
+rel_exp ::= term:t1 EQ:e term:t2
+			{: RESULT = new EqRel(eleft, t1, t2); :}
+		| term:t1 NEQ:n term:t2
+			{: RESULT = new NeqRel(nleft, t1, t2); :}
+		| term:t1 GT:g term:t2
+			{: RESULT = new GtRel(gleft, t1, t2); :}
+		| term:t1 LT:l term:t2
+			{: RESULT = new LtRel(lleft, t1, t2); :}
+		| term:t1 GEQ:g term:t2
+			{: RESULT = new GeqRel(gleft, t1, t2); :}
+		| term:t1 LEQ:l term:t2
+			{: RESULT = new LeqRel(lleft, t1, t2); :}
+		| term:t1 IN:i term:t2
+			{: RESULT = new InRel(ileft, t1, t2); :}
+		| term:t1 NIN:n term:t2
+			{: RESULT = new NinRel(nleft, t1, t2); :}
+		;
+		
+arith_exp ::= term:t1 MINUS:m term:t2
+			{: RESULT = new Minus(mleft, t1, t2); :}
+		| term:t1 PLUS:p term:t2
+			{: RESULT = new Plus(pleft, t1, t2); :}
+		| term:t1 MUL:m term:t2
+			{: RESULT = new Mul(mleft, t1, t2); :}
+		| term:t1 DIV:d term:t2
+			{: RESULT = new Div(dleft, t1, t2); :}
+		| term:t1 MOD:m term:t2
+			{: RESULT = new Mod(mleft, t1, t2); :}
+		| MINUS:m term:t
+			{: RESULT = new NegExp(mleft, t); :}
+		%prec UMINUS
+		;
+
+set_exp ::= term:t1 UNION:u term:t2
+			{: RESULT = new Union(uleft, t1, t2); :}
+		| term:t1 DIFF:d term:t2
+			{: RESULT = new Diff(dleft, t1, t2); :}
+		| LBRACE:l term:t RBRACE
+			{: RESULT = new BraceTerm(lleft, t); :}
+		| LBRACE:l LBRACK terms:ts RBRACK RBRACE
+			{: RESULT = new BraceTerms(lleft, ts); :}
+		| LBRACE:l term:u COLON:c variable:v SETDEF:s formula: sf RBRACE
+			{: RESULT = new Setdef(sleft, u, v, sf); :}
+		;		
+
+		
+variable ::= ID:i
+			{: RESULT = new IdVariable(ileft, i); :}
+		|	ID:i LBRACK index:idx RBRACK
+			{: RESULT = new IndexVariable(ileft, new Identifier(i), idx); :}
+		;
+
+userVariable ::= ID:i
+			{: RESULT = new UserVariable(ileft, i); :}
+		;
+		
+quantifier ::= FORALL:f
+			{: RESULT = new ForAll(fleft); :}
+		| EXISTS:e
+			{: RESULT = new Exists(eleft); :}
+		| NEXISTS:n
+			{: RESULT = new Nexists(nleft); :}
+		;		
+		
+domain	::= IN:i
+			{: RESULT = new In(ileft); :}
+		|	NIN:n
+			{: RESULT = new Nin(nleft); :}
+		;
+		
+constant ::= TRUE:t
+			{: RESULT = new True(tleft); :}
+		|	FALSE:f
+			{: RESULT = new False(fleft); :}
+		|	NUM:n
+			{: RESULT = new NumConstant(nleft, new Num(n)); :}
+		|	STR:s
+			{: RESULT = new StrConstant(sleft, s); :}
+		;
+
+empty	::= EMPTY:e
+			{:RESULT = new Empty(eleft); :}
+		;
+		
+index	::= NUM:n
+			{: 	RESULT = new Index(nleft, new Num(n)); :}
+		;
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		

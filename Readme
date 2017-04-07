@@ -1,0 +1,6 @@
+Modeling and Analysis of High Level Petri nets.
+
+Analysis Method: 
+  1) Simulation;
+  2) SPIN Model Checker;
+  3) Z3 SMT Checker.

@@ -1,0 +1,325 @@
+	/**
+	 * set new property is for testing two directional algorithm
+	 */
+	public void set_newprop() {
+		String placeName0 = "P5";
+		Place p0  = model.getPlaceByName(placeName0);
+		DataType dt0 = p0.getDataType();
+		Token tok0 = new Token(dt0);
+		tok0.Tlist.add(new BasicType(0, 5,""));
+		this.properties.add(new Property(placeName0, tok0,  Property.RelationType.CONJUNCTION, Property.Operator.EQ));
+	}
+
+	//token ring: p_tr_1
+	public void set_TokenRing_5_p_tr_1() {
+		String placeName0 = "State";
+		Place p0  = model.getPlaceByName(placeName0);
+		DataType dt0 = p0.getDataType();
+		Token tok0 = new Token(dt0);
+		tok0.Tlist.add(new BasicType(0, 3,""));
+		tok0.Tlist.add(new BasicType(0, 0,""));
+		this.properties.add(new Property(placeName0, tok0,  Property.RelationType.CONJUNCTION, Property.Operator.EQ));
+		
+		String placeName1 = "State";
+		Place p1  = model.getPlaceByName(placeName1);
+		DataType dt1 = p1.getDataType();
+		Token tok1 = new Token(dt1);
+		tok1.Tlist.add(new BasicType(0, 2,""));
+		tok1.Tlist.add(new BasicType(0, 4,""));
+		this.properties.add(new Property(placeName1, tok1,  Property.RelationType.CONJUNCTION, Property.Operator.EQ));
+	}
+
+	//shared memory_5: p_sm_2
+	public void set_SharedMemory_5_p_sm_2() {
+		String placeName0 = "Ext_Mem_Acc";
+		Place p0  = model.getPlaceByName(placeName0);
+		DataType dt0 = p0.getDataType();
+		Token tok0 = new Token(dt0);
+		tok0.Tlist.add(new BasicType(0, 1,""));
+		tok0.Tlist.add(new BasicType(0, 5,""));
+		this.properties.add(new Property(placeName0, tok0,  Property.RelationType.CONJUNCTION, Property.Operator.EQ));
+		
+		String placeName1 = "Active";
+		Place p1  = model.getPlaceByName(placeName1);
+		DataType dt1 = p1.getDataType();
+		Token tok1 = new Token(dt1);
+		tok1.Tlist.add(new BasicType(0, 5,""));
+		this.properties.add(new Property(placeName1, tok1,  Property.RelationType.CONJUNCTION, Property.Operator.NEQ));
+	}
+
+	//Philosophers_5: p_dp_1 \square\neg\left(marking\left(Eating\right)=4\wedge marking\left(Eating\right)=3\right)
+	public void set_Philosophers_5_p_dp_1() {
+		String placeName0 = "Eating";
+		Place p0  = model.getPlaceByName(placeName0);
+		DataType dt0 = p0.getDataType();
+		Token tok0 = new Token(dt0);
+		tok0.Tlist.add(new BasicType(0, 4,""));
+		this.properties.add(new Property(placeName0, tok0,  Property.RelationType.CONJUNCTION, Property.Operator.EQ));
+		
+		String placeName1 = "Eating";
+		Place p1  = model.getPlaceByName(placeName1);
+		DataType dt1 = p1.getDataType();
+		Token tok1 = new Token(dt1);
+		tok1.Tlist.add(new BasicType(0, 3,""));
+		this.properties.add(new Property(placeName1, tok1,  Property.RelationType.CONJUNCTION, Property.Operator.EQ));
+	}
+	
+	//Philosophers_5: p_dp_2 \square\left(marking\left(Eating\right)=4\vee marking(Eating)\neq1\vee marking\left(Chopsticks\right)=4\right)
+	public void set_Philosophers_5_p_dp_2() {
+		String placeName0 = "Eating";
+		Place p0  = model.getPlaceByName(placeName0);
+		DataType dt0 = p0.getDataType();
+		Token tok0 = new Token(dt0);
+		tok0.Tlist.add(new BasicType(0, 4,""));
+		this.properties.add(new Property(placeName0, tok0,  Property.RelationType.CONJUNCTION, Property.Operator.NEQ));
+		
+		String placeName1 = "Chopsticks";
+		Place p1  = model.getPlaceByName(placeName1);
+		DataType dt1 = p1.getDataType();
+		Token tok1 = new Token(dt1);
+		tok1.Tlist.add(new BasicType(0, 4,""));
+		this.properties.add(new Property(placeName1, tok1,  Property.RelationType.CONJUNCTION, Property.Operator.NEQ));
+		
+		String placeName2 = "Eating";
+		Place p2  = model.getPlaceByName(placeName2);
+		DataType dt2 = p2.getDataType();
+		Token tok2 = new Token(dt2);
+		tok2.Tlist.add(new BasicType(0, 1,""));
+		this.properties.add(new Property(placeName2, tok2,  Property.RelationType.CONJUNCTION, Property.Operator.EQ));	
+	}
+
+	//token ring_5: reach p_8_markingcomparison_eq_or: I ((<3, 0>!=marking(State)) | (<2, 4>!=marking(State)))
+	public void set_TokenRing_5_P8_ReachabilityMarkingComparison() {
+		String placeName0 = "State";
+		Place p0  = model.getPlaceByName(placeName0);
+		DataType dt0 = p0.getDataType();
+		Token tok0 = new Token(dt0);
+		tok0.Tlist.add(new BasicType(0, 3,""));
+		tok0.Tlist.add(new BasicType(0, 0,""));
+		this.properties.add(new Property(placeName0, tok0,  Property.RelationType.CONJUNCTION, Property.Operator.EQ));
+		
+		String placeName1 = "State";
+		Place p1  = model.getPlaceByName(placeName1);
+		DataType dt1 = p1.getDataType();
+		Token tok1 = new Token(dt1);
+		tok1.Tlist.add(new BasicType(0, 2,""));
+		tok1.Tlist.add(new BasicType(0, 4,""));
+		this.properties.add(new Property(placeName1, tok1,  Property.RelationType.CONJUNCTION, Property.Operator.EQ));		
+	}
+
+	//token ring_5: reach p_7_markingcomparison_eq_and: I ((<3, 0>!=marking(State)) & (<2, 4>!=marking(State)))
+	public void set_TokenRing_5_P7_ReachabilityMarkingComparison() {
+		String placeName0 = "State";
+		Place p0  = model.getPlaceByName(placeName0);
+		DataType dt0 = p0.getDataType();
+		Token tok0 = new Token(dt0);
+		tok0.Tlist.add(new BasicType(0, 3,""));
+		tok0.Tlist.add(new BasicType(0, 0,""));
+		this.properties.add(new Property(placeName0, tok0,  Property.RelationType.CONJUNCTION, Property.Operator.EQ));
+		
+		String placeName1 = "State";
+		Place p1  = model.getPlaceByName(placeName1);
+		DataType dt1 = p1.getDataType();
+		Token tok1 = new Token(dt1);
+		tok1.Tlist.add(new BasicType(0, 2,""));
+		tok1.Tlist.add(new BasicType(0, 4,""));
+		this.properties.add(new Property(placeName1, tok1,  Property.RelationType.DISJUNCTION, Property.Operator.EQ));		
+	}
+
+	//shared memory_20: reach p_27_markingcomparison_eq_and: I ((<dot>!=marking(Ext_Bus)) & (<12>!=marking(Memory)))
+	public void set_SharedMemory_20_P27_ReachabilityMarkingComparison() {
+		String placeName0 = "Ext_Bus";
+		Place p0  = model.getPlaceByName(placeName0);
+		DataType dt0 = p0.getDataType();
+		Token tok0 = new Token(dt0);
+		tok0.Tlist.add(new BasicType(0, 1,""));
+		this.properties.add(new Property(placeName0, tok0,  Property.RelationType.CONJUNCTION, Property.Operator.NEQ));
+		
+		String placeName1 = "Memory";
+		Place p1  = model.getPlaceByName(placeName1);
+		DataType dt1 = p1.getDataType();
+		Token tok1 = new Token(dt1);
+		tok1.Tlist.add(new BasicType(0, 12,""));
+		this.properties.add(new Property(placeName1, tok1,  Property.RelationType.CONJUNCTION, Property.Operator.NEQ));		
+	}
+
+	//shared memory_10: reach p_27_markingcomparison_eq_and: I ((<10, 7>!=marking(Ext_Mem_Acc)) & (<7, 1>=marking(Ext_Mem_Acc)))
+	public void set_SharedMemory_10_P27_ReachabilityMarkingComparison() {
+		String placeName0 = "Ext_Mem_Acc";
+		Place p0  = model.getPlaceByName(placeName0);
+		DataType dt0 = p0.getDataType();
+		Token tok0 = new Token(dt0);
+		tok0.Tlist.add(new BasicType(0, 10,""));
+		tok0.Tlist.add(new BasicType(0, 7,""));
+		this.properties.add(new Property(placeName0, tok0,  Property.RelationType.CONJUNCTION, Property.Operator.NEQ));
+		
+		String placeName1 = "Ext_Mem_Acc";
+		Place p1  = model.getPlaceByName(placeName1);
+		DataType dt1 = p1.getDataType();
+		Token tok1 = new Token(dt1);
+		tok1.Tlist.add(new BasicType(0, 7,""));
+		tok1.Tlist.add(new BasicType(0, 1,""));
+		this.properties.add(new Property(placeName1, tok1,  Property.RelationType.CONJUNCTION, Property.Operator.EQ));		
+	}
+
+	//shared memory_10: reach p_32_markingcomparison_full_and: I ((<dot>=marking(Ext_Bus)) & (<4, 6>>marking(Ext_Mem_Acc)))
+	public void set_SharedMemory_10_P32_ReachabilityMarkingComparison() {
+		String placeName1 = "Ext_Bus";
+		Place p1  = model.getPlaceByName(placeName1);
+		DataType dt1 = p1.getDataType();
+		Token tok1 = new Token(dt1);
+		tok1.Tlist.add(new BasicType(0, 1,""));
+		this.properties.add(new Property(placeName1, tok1,  Property.RelationType.CONJUNCTION, Property.Operator.EQ));
+		
+		String placeName0 = "Ext_Mem_Acc";
+		Place p0  = model.getPlaceByName(placeName0);
+		DataType dt0 = p0.getDataType();
+		Token tok0 = new Token(dt0);
+		tok0.Tlist.add(new BasicType(0, 1,""));
+		tok0.Tlist.add(new BasicType(0, 5,""));
+		this.properties.add(new Property(placeName0, tok0,  Property.RelationType.CONJUNCTION, Property.Operator.EQ));
+	}
+	
+	//shared memory_5: reach p_32_markingcomparison_full_and: I ((<1, 5>>marking(Ext_Mem_Acc)) & (<4><marking(Memory)))
+	public void set_SharedMemory_P32_ReachabilityMarkingComparison() {
+		String placeName0 = "Ext_Mem_Acc";
+		Place p0  = model.getPlaceByName(placeName0);
+		DataType dt0 = p0.getDataType();
+		Token tok0 = new Token(dt0);
+		tok0.Tlist.add(new BasicType(0, 1,""));
+		tok0.Tlist.add(new BasicType(0, 5,""));
+		this.properties.add(new Property(placeName0, tok0,  Property.RelationType.CONJUNCTION, Property.Operator.EQ));
+		
+		String placeName1 = "Memory";
+		Place p1  = model.getPlaceByName(placeName1);
+		DataType dt1 = p1.getDataType();
+		Token tok1 = new Token(dt1);
+		tok1.Tlist.add(new BasicType(0, 4,""));
+		this.properties.add(new Property(placeName1, tok1,  Property.RelationType.CONJUNCTION, Property.Operator.EQ));
+	}
+	
+	//token ring: reach p_12_markingcomparison_full_and: I ((<0, 1>>marking(State)) & (<3, 0>!=marking(State)))
+	public void set_TokenRing_P12_markingcomparison() {
+		String placeName = "State";
+		Place p = model.getPlaceByName(placeName);
+		DataType dt = p.getDataType();
+		Token tok0 = new Token(dt);
+		tok0.Tlist.add(new BasicType(0, 0,""));
+		tok0.Tlist.add(new BasicType(0, 1,""));
+		this.properties.add(new Property(placeName, tok0));
+		
+		Token tok1 = new Token(dt);
+		tok1.Tlist.add(new BasicType(0, 3,""));
+		tok1.Tlist.add(new BasicType(0, 0,""));
+		this.properties.add(new Property(placeName, tok1));
+	}
+	
+	//token ring: reach p_8_markingcomparison_eq_or: I ((<3, 0>!=marking(State)) | (<2, 4>!=marking(State)))
+	public void set_TokenRing_P8_markingcomparison() {
+		
+		String placeName = "State";
+		Place p = model.getPlaceByName(placeName);
+		DataType dt = p.getDataType();
+		Token tok0 = new Token(dt);
+		tok0.Tlist.add(new BasicType(0, 3,""));
+		tok0.Tlist.add(new BasicType(0, 0,""));
+		this.properties.add(new Property(placeName, tok0, Property.RelationType.CONJUNCTION, Property.Operator.NEQ));
+		
+		Token tok1 = new Token(dt);
+		tok1.Tlist.add(new BasicType(0, 2,""));
+		tok1.Tlist.add(new BasicType(0, 4,""));
+		this.properties.add(new Property(placeName, tok1, Property.RelationType.DISJUNCTION, Property.Operator.NEQ));
+	}
+	
+
+	
+	//shared memory: reach p_27_markingcomparison_eq_and: I ((<4>=marking(Memory)) & (<dot>=marking(Ext_Bus)))
+	public void set_SharedMemory_P27_ReachabilityMarkingComparison() {
+		String placeName0 = "Memory";
+		Place p0  = model.getPlaceByName(placeName0);
+		DataType dt0 = p0.getDataType();
+		Token tok0 = new Token(dt0);
+		tok0.Tlist.add(new BasicType(0, 4,""));
+		this.properties.add(new Property(placeName0, tok0));
+		
+		String placeName1 = "Ext_Bus";
+		Place p1  = model.getPlaceByName(placeName1);
+		DataType dt1 = p1.getDataType();
+		Token tok1 = new Token(dt1);
+		tok1.Tlist.add(new BasicType(0, 1,""));
+		this.properties.add(new Property(placeName1, tok1));
+	}
+	//temporary specify safety(reachiability) properties, will allow user set this from GUI later
+	public void setConPurseProperties(){
+		//<arda,50,true,2,arda,bob,50,1,1,idle,none,none,0,1,1>
+		HLPNModelToZ3Converter.depth = 15;
+		String placeName = "ConPurse";
+		Place p  = model.getPlaceByName(placeName);
+		DataType dt = p.getDataType();
+//		Token tok0 = new Token(dt);
+//		
+//		tok0.Tlist.add(new BasicType(1, 0,"arda"));		
+//		tok0.Tlist.add(new BasicType(0, 50,""));
+//		tok0.Tlist.add(new BasicType(1, 0,"true"));
+//		tok0.Tlist.add(new BasicType(0, 2,""));
+//		tok0.Tlist.add(new BasicType(1, 0,"arda"));
+//		tok0.Tlist.add(new BasicType(1, 0,"bob"));
+//		tok0.Tlist.add(new BasicType(0, 50,""));
+//		tok0.Tlist.add(new BasicType(0, 1,""));
+//		tok0.Tlist.add(new BasicType(0, 1,""));
+//		tok0.Tlist.add(new BasicType(1, 0,"idle"));
+//		tok0.Tlist.add(new BasicType(1, 0,"none"));
+//		tok0.Tlist.add(new BasicType(1, 0,"none"));
+//		tok0.Tlist.add(new BasicType(0, 0,""));
+//		tok0.Tlist.add(new BasicType(0, 1,""));
+//		tok0.Tlist.add(new BasicType(0, 1,""));
+//		
+//		this.properties.add(new Property(placeName, tok0));
+		//<bob,250,true,2,bob,arda,50,1,1,idle,none,none,0,1,1>
+		Token tok1 = new Token(dt);
+		
+		tok1.Tlist.add(new BasicType(1, 0,"bob"));		
+		tok1.Tlist.add(new BasicType(0, 50,""));
+		tok1.Tlist.add(new BasicType(1, 0,"true"));
+		tok1.Tlist.add(new BasicType(0, 2,""));
+		tok1.Tlist.add(new BasicType(1, 0,"bob"));
+		tok1.Tlist.add(new BasicType(1, 0,"arda"));
+		tok1.Tlist.add(new BasicType(0, 50,""));
+		tok1.Tlist.add(new BasicType(0, 1,""));
+		tok1.Tlist.add(new BasicType(0, 1,""));
+		tok1.Tlist.add(new BasicType(1, 0,"idle"));
+		tok1.Tlist.add(new BasicType(1, 0,"none"));
+		tok1.Tlist.add(new BasicType(1, 0,"none"));
+		tok1.Tlist.add(new BasicType(0, 0,""));
+		tok1.Tlist.add(new BasicType(0, 1,""));
+		tok1.Tlist.add(new BasicType(0, 1,""));
+		
+		this.properties.add(new Property(placeName, tok1));
+	}
+	public void setProperties(){
+		HLPNModelToZ3Converter.depth = 2;
+		String placeName = "counter";
+//		String placeName = "msg_in";
+//		<req,arda,50,1,arda,bob,50,1,1,arda>
+		Place p  = model.getPlaceByName(placeName);
+		DataType dt = p.getDataType();
+		Token tok0 = new Token(dt);
+		tok0.Tlist.add(new BasicType(0, 3,""));
+		
+		Token tok1 = new Token(dt);
+		tok1.Tlist.add(new BasicType(0, 4,""));
+		this.properties.add(new Property(placeName, tok0));
+		this.properties.add(new Property(placeName, tok1));
+	}
+	public void setDiningPhilosopherProperties(){
+		HLPNModelToZ3Converter.depth = 10;
+		String placeName = "Eating";
+		Place p  = model.getPlaceByName(placeName);
+		DataType dt = p.getDataType();
+		Token tok0 = new Token(dt);
+		tok0.Tlist.add(new BasicType(0, 0,""));
+		Token tok1 = new Token(dt);
+		tok1.Tlist.add(new BasicType(0, 2,""));
+		this.properties.add(new Property(placeName, tok0));
+		this.properties.add(new Property(placeName, tok1));
+	}

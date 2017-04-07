@@ -1,0 +1,298 @@
+package ltlparser;
+
+import java_cup.runtime.*;
+import ltlparser.errormsg.*;
+import ltlparser.ltlabsyntree.*;
+
+action code {:
+
+  // An abbreviation for creating identifiers.
+  static Identifier id(String s) {
+    return new Identifier(s);
+  }
+
+:};
+
+parser code {:
+	ErrorMsg errorMsg;
+	public parser(java_cup.runtime.Scanner scan, ErrorMsg err) {
+		this(scan);
+		errorMsg = err;
+	}
+	public void syntax_error(java_cup.runtime.Symbol current) {
+	    report_error("Syntax error (" + current.sym + ")", current);
+	}
+
+	public void report_error(String message, java_cup.runtime.Symbol info) {
+		errorMsg.error(info.left, message);
+	}
+:}
+
+terminal FLTL_ALWAYS, FLTL_SOMETIMES, FLTL_NEXT, FLTL_UNTIL,
+	FLTL_WKUNTIL;
+
+terminal AND, OR, NOT, IMP, EQUIV, EQ, NEQ, GT, LT, GEQ, LEQ,
+	PLUS, MINUS, MULT, MOD, DIV,
+	FORALL, EXISTS, NEXISTS,
+	SCOPE, IN, NIN,	SUBSET,
+	NSUBSET, SUBEQSET, UNION, DIFF,
+	RBRACK, LBRACK,	RPAREN, LPAREN,
+	LBRACE, RBRACE, COMMA, DOT;
+terminal Boolean BOOL;
+terminal String ID_UPCASE;
+terminal String ID_LOWCASE;
+terminal String NUM;
+terminal String STR;
+terminal String EMPTY; // A single character string
+
+
+non terminal LogicSentence logic_sentence;
+non terminal LogicExp ltl_sentence;
+non terminal LogicExp atomic_ltl_sentence;
+non terminal LogicExp compound_ltl_sentence;
+non terminal Identifier predicate;
+non terminal Identifier function;
+non terminal TermList ltl_term_list;
+non terminal TermList ltl_term_listN;
+non terminal TermList ltl_term_listNR;
+non terminal Term ltl_term;
+non terminal Constant constant;
+non terminal Variable variable;
+non terminal Exp exp;
+non terminal Integer quantifier;
+non terminal QuantList quant_var;
+non terminal QuantList var_list;
+non terminal QuantList var_set_list;
+non terminal Exp arith_exp;
+non terminal Exp rel_exp;
+non terminal Exp set_exp;
+
+//Check this precedence
+precedence left IMP,EQUIV;
+
+precedence left AND;
+precedence left OR;
+precedence left NOT;
+
+//Check this precedence
+precedence left FLTL_ALWAYS, FLTL_SOMETIMES, FLTL_NEXT, FLTL_UNTIL,
+	FLTL_WKUNTIL;
+
+precedence left EQ,NEQ;
+precedence left LT,GT,LEQ,GEQ;
+
+precedence left SUBSET,NSUBSET,SUBEQSET;
+precedence left UNION,DIFF;
+precedence left NIN,IN;
+precedence left LBRACK,RBRACK;
+precedence left LBRACE,RBRACE;
+precedence left LPAREN,RPAREN;
+
+precedence left PLUS, MINUS, MOD;
+precedence left MULT, DIV;
+
+start with logic_sentence;
+
+logic_sentence ::= ltl_sentence:exp
+		{: RESULT = new LogicSentence(exp); :}
+	| error {: /*parser.errorMsg.error(0,"");*/ :}
+	;
+
+ltl_sentence ::= atomic_ltl_sentence:atom
+		{: RESULT = atom; :}
+	| compound_ltl_sentence:comp
+		{: RESULT = comp; :}
+	;
+
+atomic_ltl_sentence ::= predicate:p LPAREN ltl_term_list:list RPAREN // At least one argument for a predicate.
+		{: RESULT = new Predicate(p,list); :}
+	| ltl_term:t
+		{: RESULT = t; :}
+	;
+
+ltl_term ::= constant:c
+		{: RESULT = c; :}
+	| variable:v
+		{: RESULT = v; :}
+	| function:f LPAREN ltl_term_listN:l RPAREN // A function can have no parameters.
+		{: RESULT = new Function(f,l); :}
+	| exp:e
+		{: RESULT = e; :}
+	;
+
+ltl_term_list ::= ltl_term:t
+		{: TermList list = new TermList();
+		   list.addElement(t);
+		   RESULT = list;
+		:}
+	| ltl_term_list:list COMMA ltl_term:t
+		{: list.addElement(t);
+		   RESULT = list;
+		:}
+	;
+
+ltl_term_listN ::= 
+		{: TermList list = new TermList();
+		   RESULT = list;
+		:}
+	| ltl_term_listNR:list ltl_term:t
+		{: list.addElement(t);
+		   RESULT = list;
+		:}
+	;
+ltl_term_listNR ::= 
+		{: TermList list = new TermList();
+		   RESULT = list;
+		:}
+	| ltl_term_listNR:list ltl_term:t COMMA
+		{: list.addElement(t);
+		   RESULT = list;
+		:}
+	;
+
+compound_ltl_sentence ::= ltl_sentence:l1 OR ltl_sentence:l2
+		{: RESULT = new BinLogicOp(l1,l2,sym.OR); :}
+	| ltl_sentence:l1 AND ltl_sentence:l2
+		{: RESULT = new BinLogicOp(l1,l2,sym.AND); :}
+	| ltl_sentence:l1 IMP ltl_sentence:l2
+		{: RESULT = new BinLogicOp(l1,l2,sym.IMP); :}
+	| ltl_sentence:l1 EQUIV ltl_sentence:l2
+		{: RESULT = new BinLogicOp(l1,l2,sym.EQUIV); :}
+	| NOT ltl_sentence:l
+		{: RESULT = new UnLogicOp(l,sym.NOT); :}
+	| quantifier:q quant_var:qvar SCOPE LPAREN ltl_sentence:f RPAREN
+		{: RESULT = new QuantLogicOp(q.intValue(),qvar,f); :}
+	| LPAREN ltl_sentence:f RPAREN
+		{: RESULT = new SentenceWPar(f); :}
+// These were added for FT LTL
+	| FLTL_ALWAYS ltl_sentence:l
+		{: RESULT = new UnLogicOp(l,sym.FLTL_ALWAYS); :}
+	| FLTL_SOMETIMES ltl_sentence:l
+		{: RESULT = new UnLogicOp(l,sym.FLTL_SOMETIMES); :} //eventually
+	| FLTL_NEXT ltl_sentence:l
+		{: RESULT = new UnLogicOp(l,sym.FLTL_NEXT); :}
+	| FLTL_UNTIL ltl_sentence:l
+		{: RESULT = new UnLogicOp(l,sym.FLTL_UNTIL); :}
+	| FLTL_WKUNTIL ltl_sentence:l
+		{: RESULT = new UnLogicOp(l,sym.FLTL_WKUNTIL); :}
+	;
+
+quant_var ::= var_list:vl
+		{: RESULT = vl; :}
+	| var_set_list:vsl
+		{: RESULT = vsl; :}
+	;
+
+var_list ::= variable:v
+		{: QuantList vl = new QuantList();
+		   vl.addElement(v);
+		   RESULT = vl; 
+		:}
+	| var_list:vl COMMA variable:v
+		{: vl.addElement(v);
+		   RESULT = vl; 
+		:}
+	;
+
+var_set_list ::= variable:v IN variable:e //exp:e
+		{: SetMembOp s = new SetMembOp(v,e);
+		   QuantList vl = new QuantList();
+		   vl.addElement(s);
+		   RESULT = vl; 
+		:}
+	| var_set_list:vl COMMA variable:v IN variable:e //exp:e
+		{: SetMembOp s = new SetMembOp(v,e);
+		   vl.addElement(s);
+		   RESULT = vl; 
+		:}
+	;
+
+quantifier ::= FORALL
+		{: RESULT = new Integer(sym.FORALL); :}
+	| EXISTS
+		{: RESULT = new Integer(sym.EXISTS); :}
+	| NEXISTS
+		{: RESULT = new Integer(sym.NEXISTS); :}
+	;
+
+constant ::= BOOL:b
+		{: RESULT = new Constant(b,sym.BOOL); :}
+	| NUM:n
+		{: RESULT = new Constant(n,sym.NUM); :}
+	| STR:s
+		{: RESULT = new Constant(s,sym.STR); :}
+	| EMPTY:e
+		{: RESULT = new Constant(e,sym.EMPTY); :}
+	;
+
+variable ::= ID_UPCASE:id
+		{: RESULT = new Variable(id(id)); :}
+	| ID_LOWCASE:id
+		{: RESULT = new Variable(id(id)); :}
+	;
+
+predicate ::= ID_UPCASE:id
+		{: RESULT = id(id); :}
+	;
+
+function ::= ID_LOWCASE:id
+		{: RESULT = id(id); :}
+	;
+
+exp ::= arith_exp:e
+		{: RESULT = e; :}
+	| rel_exp:e
+		{: RESULT = e; :}
+	| set_exp:e
+		{: RESULT = e; :}
+	| LPAREN exp:e RPAREN
+		{: RESULT = new SentenceWPar(e); :}
+	;
+
+arith_exp ::= ltl_term:t1 MINUS ltl_term:t2
+		{: RESULT = new BinArithOp(sym.MINUS,t1,t2); :}
+	| ltl_term:t1 PLUS ltl_term:t2
+		{: RESULT = new BinArithOp(sym.PLUS,t1,t2); :}
+	| ltl_term:t1 MULT ltl_term:t2
+		{: RESULT = new BinArithOp(sym.MULT,t1,t2); :}
+	| ltl_term:t1 DIV ltl_term:t2
+		{: RESULT = new BinArithOp(sym.DIV,t1,t2); :}
+	| ltl_term:t1 MOD ltl_term:t2
+		{: RESULT = new BinArithOp(sym.MOD,t1,t2); :}
+	| MINUS ltl_term:t
+		{: RESULT = new UnArithOp(sym.MINUS,t); :}
+	;
+
+rel_exp ::= ltl_term:t1 EQ ltl_term:t2
+		{: RESULT = new RelOp(sym.EQ,t1,t2); :}
+	| ltl_term:t1 NEQ ltl_term:t2
+		{: RESULT = new RelOp(sym.NEQ,t1,t2); :}
+	| ltl_term:t1 GT ltl_term:t2
+		{: RESULT = new RelOp(sym.GT,t1,t2); :}
+	| ltl_term:t1 LT ltl_term:t2
+		{: RESULT = new RelOp(sym.LT,t1,t2); :}
+	| ltl_term:t1 GEQ ltl_term:t2
+		{: RESULT = new RelOp(sym.GEQ,t1,t2); :}
+	| ltl_term:t1 LEQ ltl_term:t2
+		{: RESULT = new RelOp(sym.LEQ,t1,t2); :}
+	;
+
+set_exp ::= ltl_term:t1 SUBSET ltl_term:t2
+		{: RESULT = new SetOp(sym.SUBSET,t1,t2); :}
+	| ltl_term:t1 NSUBSET ltl_term:t2
+		{: RESULT = new SetOp(sym.NSUBSET,t1,t2); :}
+	| ltl_term:t1 SUBEQSET ltl_term:t2
+		{: RESULT = new SetOp(sym.SUBEQSET,t1,t2); :}
+	| ltl_term:t1 UNION ltl_term:t2
+		{: RESULT = new SetOp(sym.UNION,t1,t2); :}
+	| ltl_term:t1 DIFF ltl_term:t2
+		{: RESULT = new SetOp(sym.DIFF,t1,t2); :}
+	| ltl_term:t1 NIN ltl_term:t2
+		{: RESULT = new SetOp(sym.NIN,t1,t2); :}
+	| ltl_term:t1 IN ltl_term:t2
+		{: RESULT = new SetOp(sym.IN,t1,t2); :}
+	| ltl_term:t1 LBRACK ltl_term:t2 RBRACK
+		{: RESULT = new TupleSel(t1,t2); :}
+	| LBRACE ltl_term_listN:list RBRACE
+		{: RESULT = new SetDef(list); :}
+	;
