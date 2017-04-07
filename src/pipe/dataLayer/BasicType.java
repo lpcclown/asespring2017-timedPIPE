@@ -8,7 +8,9 @@ public class BasicType
 {
 	public static final int NUMBER = 0;
 	public static final int STRING = 1;
-  public static final String[] TYPES = new String[]{"number", "string"};
+	public static final int TIMELOWERBOUND = 2;
+	public static final int TIMEUPPERBOUND = 3;
+  public static final String[] TYPES = new String[]{"number", "string", "timeUpperBound", "timeLowerBound"};
 
 
 	public final int kind;//0 is int, 1 is string

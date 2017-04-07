@@ -63,6 +63,8 @@ public class PlaceTypePanel extends JPanel {
     lBraketButton.setEnabled(dataType == null);
     stringButton.setEnabled(false);
     intButton.setEnabled(false);
+    timeLowerBoundButton.setEnabled(false);
+    timeUpperBoundButton.setEnabled(false);
     rBraketButton.setEnabled(false);
   }
 
@@ -98,6 +100,21 @@ public class PlaceTypePanel extends JPanel {
         intButtonHandler(evt);
       }
     });
+    
+    timeUpperBoundButton.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+          timeUpperBoundButtonHandler(evt);
+        }
+      });
+    
+    timeLowerBoundButton.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+          timeLowerBoundButtonHandler(evt);
+        }
+      });
+    
+    
+    
     rBraketButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
         rBraketButtonHandler(evt);
@@ -202,6 +219,8 @@ public class PlaceTypePanel extends JPanel {
     createButton = new JButton();
     stringButton = new JButton();
     intButton = new JButton();
+    timeUpperBoundButton = new JButton();
+    timeLowerBoundButton = new JButton();
 
     loadButton = new JButton();
 
@@ -233,9 +252,9 @@ public class PlaceTypePanel extends JPanel {
 //	      gridBagConstraints.insets = new java.awt.Insets(3, 3, 3, 3);
 //	      placeTypePanel.add(nameLabel, gridBagConstraints);
 
-    nameTextField.setMaximumSize(new java.awt.Dimension(180, 20));
-    nameTextField.setMinimumSize(new java.awt.Dimension(180, 20));
-    nameTextField.setPreferredSize(new java.awt.Dimension(180, 20));
+    nameTextField.setMaximumSize(new java.awt.Dimension(580, 20));
+    nameTextField.setMinimumSize(new java.awt.Dimension(580, 20));
+    nameTextField.setPreferredSize(new java.awt.Dimension(580, 20));
     namePanel.add(nameTextField);
 
 
@@ -263,7 +282,7 @@ public class PlaceTypePanel extends JPanel {
 
     buttonPanel1.add(lBraketButton);
 
-    Dimension buttonDimension = new java.awt.Dimension(100, 25);
+    Dimension buttonDimension = new java.awt.Dimension(180, 25);
     stringButton.setText("String");
     stringButton.setMaximumSize(buttonDimension);
     stringButton.setMinimumSize(buttonDimension);
@@ -277,6 +296,21 @@ public class PlaceTypePanel extends JPanel {
     intButton.setPreferredSize(buttonDimension);
 
     buttonPanel1.add(intButton);
+    
+    //[LIU0405]add time button in place type
+    timeLowerBoundButton.setText("TimeLowerBound");
+    timeLowerBoundButton.setMaximumSize(buttonDimension);
+    timeLowerBoundButton.setMinimumSize(buttonDimension);
+    timeLowerBoundButton.setPreferredSize(buttonDimension);
+
+    buttonPanel1.add(timeLowerBoundButton);
+    
+    timeUpperBoundButton.setText("TimeUpperBound");
+    timeUpperBoundButton.setMaximumSize(buttonDimension);
+    timeUpperBoundButton.setMinimumSize(buttonDimension);
+    timeUpperBoundButton.setPreferredSize(buttonDimension);
+
+    buttonPanel1.add(timeUpperBoundButton);
 
     rBraketButton.setText(">");
     rBraketButton.setMaximumSize(buttonDimension);
@@ -634,6 +668,15 @@ public class PlaceTypePanel extends JPanel {
     includeIntermediateDefinitionParts("number");
   }
 
+  private void timeUpperBoundButtonHandler(ActionEvent evt) {
+	includeIntermediateDefinitionParts("timeUpperBound");
+  }
+  
+  private void timeLowerBoundButtonHandler(ActionEvent evt) {
+	includeIntermediateDefinitionParts("timeLowerBound");
+  }
+  
+  
   private void includeIntermediateDefinitionParts(final String pTerm) {
       doString(pTerm, false);
 
@@ -712,6 +755,8 @@ public class PlaceTypePanel extends JPanel {
   private JButton rBraketButton;
   private JButton stringButton;
   private JButton intButton;
+  private JButton timeUpperBoundButton;
+  private JButton timeLowerBoundButton;
   private JCheckBox powcheckbox;
   private JLabel nameLabel;
   private JTextField nameTextField;
@@ -732,6 +777,8 @@ public class PlaceTypePanel extends JPanel {
   public void setEnabledTypesButtons(final boolean pEnabledTypesButtons) {
     stringButton.setEnabled(pEnabledTypesButtons);
     intButton.setEnabled(pEnabledTypesButtons);
+    timeLowerBoundButton.setEnabled(pEnabledTypesButtons);
+    timeUpperBoundButton.setEnabled(pEnabledTypesButtons);
     rBraketButton.setEnabled(pEnabledTypesButtons);
   }
 }

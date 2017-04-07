@@ -48,7 +48,7 @@ public class DataType
 		types = new Vector<String>();
 		for(int i = 0; i < t.length; i ++)
 		{
-      if (t[i].equals(BasicType.TYPES[BasicType.NUMBER]) || t[i].equals(BasicType.TYPES[BasicType.STRING])) {
+      if (t[i].equals(BasicType.TYPES[BasicType.NUMBER]) || t[i].equals(BasicType.TYPES[BasicType.STRING]) || t[i].equals(BasicType.TYPES[BasicType.TIMELOWERBOUND]) || t[i].equals(BasicType.TYPES[BasicType.TIMEUPPERBOUND]) ) {
         num ++;
 			}
 			else

@@ -508,7 +508,7 @@ public class Place
 	      contentPane.add( new PlaceTypePanel(guiDialog.getRootPane(), 
 	               this,group,CreateGui.getModel(), CreateGui.getView()));
 
-	      guiDialog.setResizable(false);     
+	      guiDialog.setResizable(true);     
 	      
 	      // Make window fit contents' preferred size
 	      guiDialog.pack();

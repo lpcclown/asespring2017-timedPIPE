@@ -89,7 +89,7 @@ public class TransitionEditor
    private void timedTransition(){
       timedRadioButton.setSelected(true);
       
-      rateLabel.setText("Rate:");
+      rateLabel.setText("Duration:");
       rateTextField.setText("" + transition.getRate());
       
       prioritySlider.setEnabled(false);
@@ -205,7 +205,7 @@ public class TransitionEditor
       gridBagConstraints.insets = new java.awt.Insets(3, 3, 3, 3);
       transitionEditorPanel.add(nameTextField, gridBagConstraints);
 
-      rateLabel.setText("Rate:");
+      rateLabel.setText("Duration:");
       gridBagConstraints = new java.awt.GridBagConstraints();
       gridBagConstraints.gridx = 0;
       gridBagConstraints.gridy = 1;

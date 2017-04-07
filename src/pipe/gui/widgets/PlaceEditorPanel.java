@@ -69,7 +69,8 @@ public class PlaceEditorPanel
   private void initToken() {
     if (place.getDataType() != null && place.getToken() != null) {
       for (Token token : place.getToken().listToken) {
-        dml.addElement(token.displayToken());
+    	  //[LIU0406] to be updated
+    	  dml.addElement(token.displayToken());
       }
     }
   }
