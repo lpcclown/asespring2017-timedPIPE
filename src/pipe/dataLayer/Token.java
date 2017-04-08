@@ -158,20 +158,24 @@ public class Token implements Comparable<Token>
 
 	@Override
 	public int compareTo(Token o) {		
-		//return   Tlist.firstElement().getValue().toString().compareTo(o.Tlist.firstElement().getValue().toString());
+		
+		Integer a = new Integer(Tlist.elementAt(1).getValue().toString());
+		Integer b = new Integer(o.Tlist.elementAt(1).getValue().toString());
+		System.out.println(Tlist.elementAt(0).getValue());
 		
 		
-		Integer a = new Integer(Tlist.firstElement().getValueAsInt());
-		Integer b = new Integer(o.Tlist.firstElement().getValueAsInt());
+		Integer c = new Integer(Tlist.elementAt(2).getValue().toString());
+		Integer d = new Integer(o.Tlist.elementAt(2).getValue().toString());
 		
-		return a.compareTo(b);
+		int i =  a.compareTo(b);
+		if (i != 0) return i;
 		
-//		return   new Integer(Tlist.firstElement().getValueAsInt()).compareTo( (Int32)Tlist.firstElement().getValueAsInt());
+		return  c.compareTo(d);
 	}
 	
     @Override
     public String toString() {
-        return ".......{" + "item=" + Tlist.firstElement().getValue().toString() + '}';
+        return ".......{" + "LowerBound=" + Tlist.elementAt(1).getValue().toString() + "UpperBound=" + Tlist.elementAt(2).getValue().toString() + '}';
     }
 	
 	
