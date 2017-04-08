@@ -2,7 +2,7 @@ package pipe.dataLayer;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Token 
+public class Token implements Comparable<Token>
 {
 	private static final String[] TEMPLATES = new String[]{"%s", "\"%s\""};
 	DataType tokenType;
@@ -155,6 +155,26 @@ public class Token
 	public String displayToken() {
 		return displayToken(true);
 	}
+
+	@Override
+	public int compareTo(Token o) {		
+		//return   Tlist.firstElement().getValue().toString().compareTo(o.Tlist.firstElement().getValue().toString());
+		
+		
+		Integer a = new Integer(Tlist.firstElement().getValueAsInt());
+		Integer b = new Integer(o.Tlist.firstElement().getValueAsInt());
+		
+		return a.compareTo(b);
+		
+//		return   new Integer(Tlist.firstElement().getValueAsInt()).compareTo( (Int32)Tlist.firstElement().getValueAsInt());
+	}
+	
+    @Override
+    public String toString() {
+        return ".......{" + "item=" + Tlist.firstElement().getValue().toString() + '}';
+    }
+	
+	
 }
 
 

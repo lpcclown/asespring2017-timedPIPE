@@ -27,11 +27,15 @@ public class abToken {
 //		if(!isDef)
 //			return false;
     listToken.add(t);
+    System.out.println(listToken);
+    Collections.sort((List)listToken);
+    System.out.println(listToken);
     return true;
   }
 
   public boolean addTokens(final Vector<Token> pTokensList) {
     listToken.addAll(pTokensList);
+    Collections.sort(listToken);
     return true;
   }
 

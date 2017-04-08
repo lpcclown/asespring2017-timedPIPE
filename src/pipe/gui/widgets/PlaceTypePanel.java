@@ -359,9 +359,9 @@ public class PlaceTypePanel extends JPanel {
     TypeTextField.setLineWrap(true);
     TypeTextField.setRows(8);
     TypeTextField.setEditable(false);
-    TypeTextField.setMaximumSize(new java.awt.Dimension(230, 150));
-    TypeTextField.setMinimumSize(new java.awt.Dimension(230, 150));
-    TypeTextField.setPreferredSize(new java.awt.Dimension(230, 150));
+    TypeTextField.setMaximumSize(new java.awt.Dimension(580, 160));
+    TypeTextField.setMinimumSize(new java.awt.Dimension(580, 160));
+    TypeTextField.setPreferredSize(new java.awt.Dimension(580, 160));
     gridBagConstraints = new java.awt.GridBagConstraints();
     gridBagConstraints.gridx = 0;
     gridBagConstraints.gridy = 0;
