@@ -181,7 +181,8 @@ public class Animator {
 				fireHighLevelTransitionInGUI(tCandidate);
 				System.out
 						.println("Animator.doHighLevelRandomFiring Transition: " + tCandidate.getName() + " is fired");
-
+				GuiFrame.globalTime += tCandidate.getLowerBound();
+				GuiFrame.addGlobalTimeText();
 				Iterator<Transition> iDepTrans = tCandidate.getDependentTrans().iterator();
 				while (iDepTrans.hasNext()) {
 					Transition thisDepTrans = iDepTrans.next();

@@ -120,6 +120,8 @@ public class GuiFrame extends JFrame implements ActionListener, Observer {
 
 	public static int globalTime;
 
+	public static JTextField globalTimeTextField = new JTextField(" Global Time: " + globalTime);
+
 	public GuiFrame(String title) {
 		// HAK-arrange for frameTitle to be initialized and the default file
 		// name
@@ -401,6 +403,10 @@ public class GuiFrame extends JFrame implements ActionListener, Observer {
 		setJMenuBar(menuBar);
 	}
 
+	public static void addGlobalTimeText() {
+		globalTimeTextField.setText(" Global Time: " + globalTime);
+	}
+
 	private void buildToolbar() {
 		// Create the toolbar
 		JToolBar toolBar = new JToolBar();
@@ -473,8 +479,8 @@ public class GuiFrame extends JFrame implements ActionListener, Observer {
 		addButton(toolBar, helpAction);
 
 		toolBar.addSeparator();
-		toolBar.add(new JTextField(" Global Time: " + globalTime));
-
+		// toolBar.add(new JTextField(" Global Time: " + globalTime));
+		toolBar.add(globalTimeTextField);
 		for (int i = 0; i < toolBar.getComponentCount(); i++) {
 			toolBar.getComponent(i).setFocusable(false);
 		}
