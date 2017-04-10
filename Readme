@@ -4,3 +4,12 @@ Analysis Method:
   1) Simulation;
   2) SPIN Model Checker;
   3) Z3 SMT Checker.
+
+Above information is coming from original PIPE+ software.
+For Timed PIPE+, what we added into the original PIPE+:
+1. Add arriving time attribute into token.
+2. Add lowerbound and upperbound into transition.
+3. Sort the tokens in the list automatically once added.
+4. Add global time implementation and show it up on the GUI.
+5. Modify the animator logic to update token's arriving time, when it tranfer from one place to another.
+6. After each round animation, it will automatically scan all the outdated token, then re-new the arriving time. 
