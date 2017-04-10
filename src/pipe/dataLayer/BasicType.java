@@ -1,19 +1,17 @@
 package pipe.dataLayer;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
-
 import java.math.BigDecimal;
 
-public class BasicType
-{
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
+public class BasicType {
 	public static final int NUMBER = 0;
 	public static final int STRING = 1;
 	public static final int TIMELOWERBOUND = 2;
-	public static final int TIMEUPPERBOUND = 3;
-  public static final String[] TYPES = new String[]{"number", "string", "timeUpperBound", "timeLowerBound"};
+	// public static final int TIMEUPPERBOUND = 3;
+	public static final String[] TYPES = new String[] { "number", "string", "arrivingTime" };
 
-
-	public final int kind;//0 is int, 1 is string
+	public final int kind;// 0 is int, 1 is string
 	private Object mValue;
 
 	public BasicType(final int pKind) {
@@ -29,8 +27,7 @@ public class BasicType
 		this.kind = pKind;
 		if (kind == 0) {
 			setValue(pInt);
-		}
-		else {
+		} else {
 			setValue(pString);
 		}
 	}
@@ -62,15 +59,14 @@ public class BasicType
 	public void setValue(final String pStringValue) {
 		if (kind == NUMBER) {
 			mValue = new BigDecimal(pStringValue.length() == 0 ? "0" : pStringValue);
-		}
-		else {
+		} else {
 			mValue = pStringValue;
 		}
 	}
 
-  public void setValue(final Number pValue) {
-    mValue = kind == NUMBER ? pValue : pValue.toString();
-  }
+	public void setValue(final Number pValue) {
+		mValue = kind == NUMBER ? pValue : pValue.toString();
+	}
 
 	public void setValue(final Object pObject) {
 		setValue(pObject.toString());
