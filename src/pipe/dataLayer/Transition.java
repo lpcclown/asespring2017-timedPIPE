@@ -1089,6 +1089,7 @@ public class Transition extends PlaceTransitionObject {
 		for (Arc arc : getArcOutList()) {
 			Place place = (Place) arc.getTarget();
 			for (String var : arc.getVars()) {
+				System.out.println("var: " + var);
 				if (symTable.exist(var)) {
 					Object binder = symTable.lookup(var);
 					if (arc.isSetVar() && binder instanceof abToken) {
@@ -1105,6 +1106,9 @@ public class Transition extends PlaceTransitionObject {
 						// store the arriving time
 						((Token) binder).Tlist.elementAt(1).setValue(this.getLowerBound() + GuiFrame.globalTime);
 						((Token) binder).rebuildmDisplayString();
+
+						// if (((Token) binder).Tlist.elementAt(1).getValue() +
+						// this.getUpperBound() < GuiFrame.globalTime )
 					}
 				}
 			}

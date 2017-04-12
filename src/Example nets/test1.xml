@@ -2,7 +2,7 @@
 <net id="Net-One" type="P/T net">
 <place id="P0">
 <graphics>
-<position x="40.0" y="130.0"/>
+<position x="25.0" y="115.0"/>
 </graphics>
 <name>
 <value>P0</value>
@@ -17,7 +17,7 @@
 </graphics>
 </initialMarking>
 <capacity>
-<value>5</value>
+<value>1</value>
 </capacity>
 <DataType>
 <name>
@@ -43,74 +43,6 @@
 <DataType>
 <name>
 <value>aa</value>
-</name>
-<Ntype>
-<value>2</value>
-</Ntype>
-<types>
-<value>string,arrivingTime</value>
-</types>
-<ifPow>
-<value>T</value>
-</ifPow>
-<NumofElement>
-<value>2</value>
-</NumofElement>
-<isDef>
-<value>T</value>
-</isDef>
-</DataType>
-</Datatype-group>
-<abtoken>
-<isDef>
-<value>T</value>
-</isDef>
-<listToken/>
-</abtoken>
-</place>
-<place id="P1">
-<graphics>
-<position x="295.0" y="175.0"/>
-</graphics>
-<name>
-<value>P1</value>
-<graphics>
-<offset x="-5.0" y="35.0"/>
-</graphics>
-</name>
-<initialMarking>
-<value>0</value>
-<graphics>
-<offset x="0.0" y="0.0"/>
-</graphics>
-</initialMarking>
-<capacity>
-<value>5</value>
-</capacity>
-<DataType>
-<name>
-<value>bb</value>
-</name>
-<Ntype>
-<value>2</value>
-</Ntype>
-<types>
-<value>string, arrivingTime</value>
-</types>
-<ifPow>
-<value>T</value>
-</ifPow>
-<NumofElement>
-<value>2</value>
-</NumofElement>
-<isDef>
-<value>T</value>
-</isDef>
-</DataType>
-<Datatype-group>
-<DataType>
-<name>
-<value>bb</value>
 </name>
 <Ntype>
 <value>2</value>
@@ -139,7 +71,7 @@
 <value>a</value>
 </data>
 <data>
-<value>1</value>
+<value>0</value>
 </data>
 </token>
 <token>
@@ -147,7 +79,23 @@
 <value>b</value>
 </data>
 <data>
-<value>2</value>
+<value>0</value>
+</data>
+</token>
+<token>
+<data>
+<value>c</value>
+</data>
+<data>
+<value>0</value>
+</data>
+</token>
+<token>
+<data>
+<value>d</value>
+</data>
+<data>
+<value>0</value>
 </data>
 </token>
 <token>
@@ -155,15 +103,83 @@
 <value>e</value>
 </data>
 <data>
-<value>3</value>
+<value>0</value>
 </data>
 </token>
 </listToken>
 </abtoken>
 </place>
+<place id="P1">
+<graphics>
+<position x="280.0" y="160.0"/>
+</graphics>
+<name>
+<value>P1</value>
+<graphics>
+<offset x="-5.0" y="35.0"/>
+</graphics>
+</name>
+<initialMarking>
+<value>0</value>
+<graphics>
+<offset x="0.0" y="0.0"/>
+</graphics>
+</initialMarking>
+<capacity>
+<value>3</value>
+</capacity>
+<DataType>
+<name>
+<value>bb</value>
+</name>
+<Ntype>
+<value>2</value>
+</Ntype>
+<types>
+<value>string, arrivingTime</value>
+</types>
+<ifPow>
+<value>T</value>
+</ifPow>
+<NumofElement>
+<value>2</value>
+</NumofElement>
+<isDef>
+<value>T</value>
+</isDef>
+</DataType>
+<Datatype-group>
+<DataType>
+<name>
+<value>bb</value>
+</name>
+<Ntype>
+<value>2</value>
+</Ntype>
+<types>
+<value>string,arrivingTime</value>
+</types>
+<ifPow>
+<value>T</value>
+</ifPow>
+<NumofElement>
+<value>2</value>
+</NumofElement>
+<isDef>
+<value>T</value>
+</isDef>
+</DataType>
+</Datatype-group>
+<abtoken>
+<isDef>
+<value>T</value>
+</isDef>
+<listToken/>
+</abtoken>
+</place>
 <place id="P2">
 <graphics>
-<position x="490.0" y="115.0"/>
+<position x="475.0" y="100.0"/>
 </graphics>
 <name>
 <value>P2</value>
@@ -178,7 +194,7 @@
 </graphics>
 </initialMarking>
 <capacity>
-<value>4</value>
+<value>3</value>
 </capacity>
 <DataType>
 <name>
@@ -226,32 +242,7 @@
 <isDef>
 <value>T</value>
 </isDef>
-<listToken>
-<token>
-<data>
-<value>d</value>
-</data>
-<data>
-<value>5</value>
-</data>
-</token>
-<token>
-<data>
-<value>c</value>
-</data>
-<data>
-<value>88</value>
-</data>
-</token>
-<token>
-<data>
-<value>f</value>
-</data>
-<data>
-<value>99</value>
-</data>
-</token>
-</listToken>
+<listToken/>
 </abtoken>
 </place>
 <transition id="T0">
@@ -370,7 +361,7 @@
 <value>T</value>
 </isDef>
 </DataType>
-<arcpath id="000" x="63" y="151" curvePoint="false"/>
+<arcpath id="000" x="48" y="136" curvePoint="false"/>
 <arcpath id="001" x="216" y="282" curvePoint="false"/>
 <type value="normal"/>
 </arc>
@@ -403,7 +394,7 @@
 <value>T</value>
 </isDef>
 </DataType>
-<arcpath id="000" x="319" y="195" curvePoint="false"/>
+<arcpath id="000" x="304" y="180" curvePoint="false"/>
 <arcpath id="001" x="456" y="282" curvePoint="false"/>
 <type value="normal"/>
 </arc>
@@ -436,7 +427,7 @@
 <value>T</value>
 </isDef>
 </DataType>
-<arcpath id="000" x="487" y="126" curvePoint="false"/>
+<arcpath id="000" x="472" y="112" curvePoint="false"/>
 <arcpath id="001" x="331" y="117" curvePoint="false"/>
 <type value="normal"/>
 </arc>
@@ -470,7 +461,7 @@
 </isDef>
 </DataType>
 <arcpath id="000" x="226" y="282" curvePoint="false"/>
-<arcpath id="001" x="297" y="198" curvePoint="false"/>
+<arcpath id="001" x="284" y="184" curvePoint="false"/>
 <type value="normal"/>
 </arc>
 <arc id="T1 to P2" source="T1" target="P2" variable="{y}">
@@ -503,7 +494,7 @@
 </isDef>
 </DataType>
 <arcpath id="000" x="462" y="267" curvePoint="false"/>
-<arcpath id="001" x="497" y="141" curvePoint="false"/>
+<arcpath id="001" x="484" y="126" curvePoint="false"/>
 <type value="normal"/>
 </arc>
 <arc id="T2 to P0" source="T2" target="P0" variable="{z}">
@@ -536,7 +527,7 @@
 </isDef>
 </DataType>
 <arcpath id="000" x="321" y="117" curvePoint="false"/>
-<arcpath id="001" x="66" y="140" curvePoint="false"/>
+<arcpath id="001" x="51" y="126" curvePoint="false"/>
 <type value="normal"/>
 </arc>
 </net>

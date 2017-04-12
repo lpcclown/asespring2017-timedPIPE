@@ -2,12 +2,16 @@ package pipe.gui;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
 import pipe.client.api.model.AnimationHistory;
 import pipe.client.api.model.AnimationHistoryItem;
+import pipe.dataLayer.Arc;
 import pipe.dataLayer.DataLayer;
+import pipe.dataLayer.Place;
+import pipe.dataLayer.Token;
 import pipe.dataLayer.Transition;
 
 /**
@@ -51,9 +55,7 @@ public class Animator {
 	public void highlightEnabledTransitions() {
 		/* rewritten by wjk 03/10/2007 */
 		DataLayer current = CreateGui.currentPNMLData();
-
 		// current.setEnabledTransitions();
-
 		Iterator transitionIterator = current.returnTransitions();
 		while (transitionIterator.hasNext()) {
 			Transition tempTransition = (Transition) transitionIterator.next();
@@ -62,6 +64,37 @@ public class Animator {
 				tempTransition.repaint();
 			}
 		}
+	}
+
+	// [LIU0412] used to scan all token to update their arriving time if expired
+	// (arrvingtime + upperbound < globaltime)
+	public void updateTokenInPlaces() {
+
+		DataLayer current = CreateGui.currentPNMLData();
+		Place[] places = current.getPlaces();
+		for (Place singlePlace : places) {
+			// System.out.println("singlePlace.getArcOutList().element().toString()
+			// "
+			// + singlePlace.getArcOutList().element().toString());
+			Arc arc = singlePlace.getArcOutList().get(0);
+			Transition nextTransition = (Transition) arc.getTarget();
+			Vector<Token> tokenList = singlePlace.getToken().listToken;
+			for (Token singleToken : tokenList) {
+				// System.out.println("nextTransition.getUpperBound() " +
+				// nextTransition.getUpperBound());
+				// System.out.println("singleToken.displayToken() " +
+				// singleToken.displayToken());
+				if (singleToken.Tlist.elementAt(1).getValueAsInt()
+						+ nextTransition.getUpperBound() < GuiFrame.globalTime) {
+					System.out.println("Expired token detected" + singleToken.displayToken());
+					System.out.println("Token original value " + singleToken.Tlist.elementAt(1).getValue());
+					singleToken.Tlist.elementAt(1).setValue(GuiFrame.globalTime);
+					System.out.println("Token updated value " + singleToken.Tlist.elementAt(1).getValue());
+					singleToken.rebuildmDisplayString();
+				}
+			}
+		}
+
 	}
 
 	/**
@@ -160,6 +193,7 @@ public class Animator {
 	}
 
 	private Transition doHighLevelRandomFiring() {
+		updateTokenInPlaces();
 		DataLayer data = CreateGui.currentPNMLData();
 		if (data.unknown.isEmpty()) {
 			JOptionPane.showMessageDialog(CreateGui.getApp(), "None of the transtions is enabled!");
@@ -168,7 +202,7 @@ public class Animator {
 		Transition tCandidate = null;
 		while (!data.unknown.isEmpty()) {
 			tCandidate = data.randomPickTransition(data.unknown);
-			System.out.println("transition selected" + tCandidate.getName()); // Test
+			System.out.println("transition selected: " + tCandidate.getName()); // Test
 																				// He
 																				// 7/29/15
 			if (!tCandidate.checkStatusAndFireWhenEnabled()) {
