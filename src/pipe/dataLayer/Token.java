@@ -105,15 +105,19 @@ public class Token implements Comparable<Token> {
 
 	public String displayToken(boolean pSeparated) {
 		if (mDisplayString == null) {
-			StringBuilder sb = new StringBuilder();
-			for (final BasicType basicType : Tlist) {
-				sb.append(String.format(TEMPLATES[basicType.kind], basicType.getValueAsString())).append(",");
-			}
-			sb.deleteCharAt(sb.length() - 1);
-			mDisplayString = sb.toString();
+			rebuildmDisplayString();
 		}
 
 		return pSeparated ? String.format("<%s>", mDisplayString) : mDisplayString;
+	}
+
+	public void rebuildmDisplayString() {
+		StringBuilder sb = new StringBuilder();
+		for (final BasicType basicType : Tlist) {
+			sb.append(String.format(TEMPLATES[basicType.kind], basicType.getValueAsString())).append(",");
+		}
+		sb.deleteCharAt(sb.length() - 1);
+		mDisplayString = sb.toString();
 	}
 
 	public BasicType getBTbyindex(int index) {

@@ -24,6 +24,7 @@ import formula.parser.Symbol;
 import formula.parser.SymbolTable;
 import pipe.gui.CreateGui;
 import pipe.gui.Grid;
+import pipe.gui.GuiFrame;
 import pipe.gui.Pipe;
 import pipe.gui.Zoomer;
 import pipe.gui.undo.ChangeRateParameterEdit;
@@ -1092,8 +1093,18 @@ public class Transition extends PlaceTransitionObject {
 					Object binder = symTable.lookup(var);
 					if (arc.isSetVar() && binder instanceof abToken) {
 						place.getToken().listToken.addAll(((abToken) binder).listToken);
+						// Lingbo To adapt to the data structure in which we
+						// store the arriving time
+						for (Token token : ((abToken) binder).listToken) {
+							token.Tlist.elementAt(1).setValue(this.getLowerBound() + GuiFrame.globalTime);
+							token.rebuildmDisplayString();
+						}
 					} else if (!arc.isSetVar() && binder instanceof Token) {
 						place.getToken().listToken.add((Token) binder);
+						// Lingbo To adapt to the data structure in which we
+						// store the arriving time
+						((Token) binder).Tlist.elementAt(1).setValue(this.getLowerBound() + GuiFrame.globalTime);
+						((Token) binder).rebuildmDisplayString();
 					}
 				}
 			}

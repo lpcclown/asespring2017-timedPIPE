@@ -49,9 +49,10 @@ public class BasicType {
 	}
 
 	public void setValue(final int pIntValue) {
-		if (kind != NUMBER) {
-			throw new IllegalArgumentException("Type mismatch: cannot accept value other than int type");
-		}
+		// if (kind != NUMBER) {
+		// throw new IllegalArgumentException("Type mismatch: cannot accept
+		// value other than int type");
+		// }
 
 		mValue = new BigDecimal(pIntValue);
 	}
