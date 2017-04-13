@@ -70,11 +70,14 @@ public class DataType {
 				Ntype += Math.pow(2, num - i - 1);
 				// num --;
 			} else if (!types.get(i).equals(BasicType.TYPES[BasicType.NUMBER])) {
-				for (int j = 0; j < group.size(); j++) {
-					if (group.get(j).ID.equals(types.get(i))) {
-						Ntype += group.get(i).Ntype * Math.pow(2, num - i - group.get(i).getNumofElement());
-						// num -= group.get(i).getNumofElement();
-						break;
+				if (group != null) {// [LIU0412] avoid to check when group is
+									// null
+					for (int j = 0; j < group.size(); j++) {
+						if (group.get(j).ID.equals(types.get(i))) {
+							Ntype += group.get(i).Ntype * Math.pow(2, num - i - group.get(i).getNumofElement());
+							// num -= group.get(i).getNumofElement();
+							break;
+						}
 					}
 				}
 			}
